@@ -1,13 +1,7 @@
 from rest_framework import serializers
 from core.models import Recipe, Ingredient
+from ingredient.serializers import IngredientSerializer
 
-
-class IngredientSerializer(serializers.ModelSerializer):
-    """Serializer for ingredients."""
-    class Meta:
-        model = Ingredient
-        fields = ['id', 'name']
-        read_only_fields = ['id']
 
 
 class RecipeSerializer(serializers.ModelSerializer):
@@ -16,7 +10,7 @@ class RecipeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Recipe
-        fields = ['id', 'title', 'ingredients']
+        fields = ['id', 'name', 'ingredients']
         read_only_fields = ['id']
 
 
@@ -27,11 +21,10 @@ class RecipeDetailSerializer(RecipeSerializer):
 
     def _get_or_create_ingredients(self, ingredients, recipe):
         """Handle getting or creating ingredients"""
-        auth_user = self.context['request'].user
         for ingredient in ingredients:
             ingredient_obj, _ = Ingredient.objects.get_or_create(
-                user=auth_user,
-                **ingredient
+                **ingredient,
+                recipe=recipe
             )
             recipe.ingredients.add(ingredient_obj)
 
@@ -47,13 +40,9 @@ class RecipeDetailSerializer(RecipeSerializer):
     def update(self, instance, validated_data):
         ingredients = validated_data.pop('ingredients', None)
         if ingredients is not None:
-            instance.ingredients.clear()
+            instance.ingredients.all().delete()
             self._get_or_create_ingredients(ingredients, instance)
-
-        for attr, val in validated_data.items():
-            setattr(instance, attr, val)
-
-        instance.save()
+        super().update(instance, validated_data)
         return instance
 
 

@@ -12,6 +12,11 @@ from django.test import SimpleTestCase
 
 @patch("core.management.commands.wait_for_db.Command.check")
 class CommandTests(SimpleTestCase):
+    """
+    A management command function designed to wait until db is ready.
+    Taken from the udemy course. More details can also be found here:
+    https://www.mlr2d.org/modules/djangorestapi/09_command_to_wait_for_db
+    """
 
     def test_wait_for_db_read(self, patched_check):
         patched_check.return_value = True
