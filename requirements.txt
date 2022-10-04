@@ -4,3 +4,4 @@ drf-spectacular
 psycopg2
 
 flake8
+autopep8
