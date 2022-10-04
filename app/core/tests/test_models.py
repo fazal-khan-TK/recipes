@@ -8,7 +8,7 @@ from core import models
 
 class ModelTests(TestCase):
     """Test models."""
-    
+
     def test_create_recipe_success(self):
         """Test creating a recipe is successful."""
         recipe = models.Recipe.objects.create(
@@ -16,7 +16,6 @@ class ModelTests(TestCase):
             description='A test recipe',
         )
         self.assertEqual(str(recipe), recipe.name)
-        
 
     def test_create_ingredient(self):
         """Test creating an ingredient is successful."""

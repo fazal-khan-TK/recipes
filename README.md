@@ -20,3 +20,8 @@
 - Running the following command should run all the unit tests:
 
 - `docker-compose run --rm app sh -c "python manage.py test"`
+
+# Linting & Formatting:
+
+- `docker-compose run --rm app sh -c "flake8"`    
+- `docker-compose run --rm app sh -c "autopep8 --in-place --recursive"`

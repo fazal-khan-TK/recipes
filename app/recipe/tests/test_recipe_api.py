@@ -74,13 +74,12 @@ class RecipeApiTests(TestCase):
         serializer = RecipeDetailSerializer(recipe)
         self.assertEqual(res.data, serializer.data)
 
-   
     def test_update_recipe(self):
         """Test updating recipe ingredients."""
         # First create the recipe using a POST request
         payload = {
             'name': 'Salt & Pepper Soup',
-            'ingredients': [ {'name': 'Salt'}, {'name': 'Pepper'} ],
+            'ingredients': [{'name': 'Salt'}, {'name': 'Pepper'}],
             'description': 'a made up recipe'
         }
         res = self.client.post(RECIPES_URL, payload, format='json')
@@ -92,14 +91,13 @@ class RecipeApiTests(TestCase):
         self.assertIn(pepper, recipe.ingredients.all())
         # now update the recipe
         patch_payload = {
-            'ingredients': [ {'name': 'Lime'} ]
+            'ingredients': [{'name': 'Lime'}]
         }
         url = detail_url(recipe_id=recipe.id)
         res = self.client.patch(url, patch_payload, format='json')
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         lime = Ingredient.objects.filter(name='Lime').first()
         self.assertIn(lime, recipe.ingredients.all())
-
 
     def test_delete_recipe_success(self):
         """Test deleting a recipe via DELETE request."""
@@ -110,4 +108,3 @@ class RecipeApiTests(TestCase):
         res = self.client.delete(url)
         self.assertEqual(res.status_code, status.HTTP_204_NO_CONTENT)
         self.assertEqual(recipes.count(), 0)
-

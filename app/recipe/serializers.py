@@ -3,7 +3,6 @@ from core.models import Recipe, Ingredient
 from ingredient.serializers import IngredientSerializer
 
 
-
 class RecipeSerializer(serializers.ModelSerializer):
     """Serializer for recipes."""
     ingredients = IngredientSerializer(many=True, required=False)
@@ -28,14 +27,12 @@ class RecipeDetailSerializer(RecipeSerializer):
             )
             recipe.ingredients.add(ingredient_obj)
 
-
     def create(self, validated_data):
         """Create a recipe."""
         ingredients = validated_data.pop('ingredients', [])
         recipe = Recipe.objects.create(**validated_data)
         self._get_or_create_ingredients(ingredients, recipe)
         return recipe
-
 
     def update(self, instance, validated_data):
         ingredients = validated_data.pop('ingredients', None)
@@ -44,5 +41,3 @@ class RecipeDetailSerializer(RecipeSerializer):
             self._get_or_create_ingredients(ingredients, instance)
         super().update(instance, validated_data)
         return instance
-
-

@@ -17,5 +17,3 @@ class IngredientApiTests(TestCase):
         ingredients = Ingredient.objects.all().first()
         serializer = IngredientSerializer(ingredients)
         self.assertEqual(serializer.data, {'name': 'Carrot'})
-
-    
